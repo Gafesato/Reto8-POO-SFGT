@@ -70,6 +70,17 @@ class MenuItem:
         """
         self.price *= fee
 
+    def __lt__(self, menuitem: "MenuItem") -> bool:
+        if self.price < menuitem.price:
+            return True
+        elif self.price == menuitem.price:
+            if self.quantity < menuitem.quantity:
+                return True
+            else:
+                return False
+        else:
+            return False
+
 
 class Appetizer(MenuItem):
     """Representation of an appetizer."""
@@ -186,6 +197,8 @@ class MenuSecondIterator:
         """Initializes the iterator instance."""
         self.order = order
         self.current_item_index = 0
+        self.list = self.order.menu_items.sort()
+        print(f"###########{self.list}")
     
     def __next__(self):
         if self.current_item_index == len(self.order):
@@ -203,16 +216,20 @@ if __name__ == '__main__':
     order = Order()
 
     # Agregar 10 elementos de diferentes categorías
-    order.add_item(Appetizer(name="Nachos", price=5.50, quantity=2, for_sharing=True))
-    order.add_item(Appetizer(name="Spring Rolls", price=4.00, quantity=3, for_sharing=False))
-    order.add_item(MainCourse(name="Steak", price=15.00, quantity=1, is_meet=True))
-    order.add_item(MainCourse(name="Vegetarian Pasta", price=12.00, quantity=2, is_meet=False))
-    order.add_item(Beverage(name="Coca Cola", price=2.50, quantity=2, size="Medium", has_sugar=True))
-    order.add_item(Beverage(name="Orange Juice", price=3.00, quantity=1, size="Large", has_sugar=False))
-    order.add_item(Dessert(name="Cheesecake", price=6.00, quantity=1, on_season=True))
-    order.add_item(Dessert(name="Chocolate Cake", price=5.50, quantity=1, on_season=False))
-    order.add_item(Appetizer(name="Garlic Bread", price=3.50, quantity=1, for_sharing=True))
-    order.add_item(Beverage(name="Latte", price=4.00, quantity=1, size="Small", has_sugar=False))
+    items = [
+        Appetizer(name="Nachos", price=5.50, quantity=2, for_sharing=True),
+        Appetizer(name="Spring Rolls", price=4.00, quantity=3, for_sharing=False),
+        MainCourse(name="Steak", price=15.00, quantity=1, is_meet=True),
+        MainCourse(name="Vegetarian Pasta", price=12.00, quantity=2, is_meet=False),
+        Beverage(name="Coca Cola", price=2.50, quantity=2, size="Medium", has_sugar=True),
+        Beverage(name="Orange Juice", price=3.00, quantity=1, size="Large", has_sugar=False),
+        Dessert(name="Cheesecake", price=6.00, quantity=1, on_season=True),
+        Dessert(name="Chocolate Cake", price=5.50, quantity=1, on_season=False),
+        Appetizer(name="Garlic Bread", price=3.50, quantity=1, for_sharing=True),
+        Beverage(name="Latte", price=4.00, quantity=1, size="Small", has_sugar=False)
+    ]
+    for item in items:
+        order.add_item(item)
 
     # Mostrar los elementos en la orden
     print('*'*20)
