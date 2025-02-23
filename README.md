@@ -28,16 +28,20 @@ Esta es la misma entrada de elementos que usé en el Reto 3.
 order = Order()
 
 # Agregar 10 elementos de diferentes categorías
-order.add_item(Appetizer(name="Nachos", price=5.50, quantity=2, for_sharing=True))
-order.add_item(Appetizer(name="Spring Rolls", price=4.00, quantity=3, for_sharing=False))
-order.add_item(MainCourse(name="Steak", price=15.00, quantity=1, is_meet=True))
-order.add_item(MainCourse(name="Vegetarian Pasta", price=12.00, quantity=2, is_meet=False))
-order.add_item(Beverage(name="Coca Cola", price=2.50, quantity=2, size="Medium", has_sugar=True))
-order.add_item(Beverage(name="Orange Juice", price=3.00, quantity=1, size="Large", has_sugar=False))
-order.add_item(Dessert(name="Cheesecake", price=6.00, quantity=1, on_season=True))
-order.add_item(Dessert(name="Chocolate Cake", price=5.50, quantity=1, on_season=False))
-order.add_item(Appetizer(name="Garlic Bread", price=3.50, quantity=1, for_sharing=True))
-order.add_item(Beverage(name="Latte", price=4.00, quantity=1, size="Small", has_sugar=False))
+items = [
+        Appetizer(name="Nachos", price=5.50, quantity=2, for_sharing=True),
+        Appetizer(name="Spring Rolls", price=4.00, quantity=3, for_sharing=False),
+        MainCourse(name="Steak", price=15.00, quantity=1, is_meet=True),
+        MainCourse(name="Vegetarian Pasta", price=12.00, quantity=2, is_meet=False),
+        Beverage(name="Coca Cola", price=2.50, quantity=2, size="Medium", has_sugar=True),
+        Beverage(name="Orange Juice", price=3.00, quantity=1, size="Large", has_sugar=False),
+        Dessert(name="Cheesecake", price=6.00, quantity=1, on_season=True),
+        Dessert(name="Chocolate Cake", price=5.50, quantity=1, on_season=False),
+        Appetizer(name="Garlic Bread", price=3.50, quantity=1, for_sharing=True),
+        Beverage(name="Latte", price=4.00, quantity=1, size="Small", has_sugar=False)
+]
+for item in items:
+    order.add_item(item)
 ```
 
 ---
@@ -104,32 +108,55 @@ return f"{actual.name:<20} | {actual.price:>6.2f} | {actual.quantity:^5}"
 ```
 **Método __lt__()**
 ```python
-def __lt__(self):
-    pass
+def __lt__(self, menuitem: "MenuItem") -> bool:
+    if self.price < menuitem.price:
+        return True
+    elif self.price == menuitem.price:
+        if self.quantity < menuitem.quantity:
+            return True
+        else:
+            return False
+    else:
+        return False
 ```
 **Salida*
 ```bash
------------------------------------
 Impresión reto 8:
 ITEMS EN LA ORDEN:
 Nombre               | Precio | Cant
 -----------------------------------
-Nachos               |   5.22 |   2
-Spring Rolls         |   4.00 |   3
-Steak                |  15.75 |   1
-Vegetarian Pasta     |  12.00 |   2
+###########None
 Coca Cola            |   2.62 |   2
 Orange Juice         |   3.00 |   1
-Cheesecake           |   5.70 |   1
-Chocolate Cake       |   5.50 |   1
 Garlic Bread         |   3.32 |   1
 Latte                |   4.00 |   1
+Spring Rolls         |   4.00 |   3
+Nachos               |   5.22 |   2
+Chocolate Cake       |   5.50 |   1
+Cheesecake           |   5.70 |   1
+Vegetarian Pasta     |  12.00 |   2
+Steak                |  15.75 |   1
 ```
 
-**Filtro orden por precio**
+**Segundo iterador**
 ```python
+class MenuSecondIterator:
+    def __init__(self, order: "Order") -> None:
+        """Initializes the iterator instance."""
+        self.order = order
+        self.current_item_index = 0
+        self.list = self.order.menu_items.sort()
+        print(f"###########{self.list}")
+    
+    def __next__(self):
+        if self.current_item_index == len(self.order):
+            raise StopIteration
+        actual = self.order.menu_items[self.current_item_index]
+        self.current_item_index += 1
+        return f"{actual.name:<20} | {actual.price:>6.2f} | {actual.quantity:^5}"
 
-
+    def __iter__(self):
+        return self
 ```
 
 ---
@@ -143,6 +170,7 @@ def __iter__(self):
     return iter(self.menu_items)
 ```
 **Recorriendo Order con un bucle**
+Aquí podemos ver que la impresión es por orden a como se agregó a la clase Order, donde el iterador personalizado si hace un buen sorting...
 ```python
 for item in order:
     print(item)
