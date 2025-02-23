@@ -119,7 +119,7 @@ def __lt__(self, menuitem: "MenuItem") -> bool:
     else:
         return False
 ```
-**Salida*
+**Salida**
 ```bash
 Impresión reto 8:
 ITEMS EN LA ORDEN:
