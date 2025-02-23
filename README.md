@@ -1,6 +1,6 @@
 # Reto8-POO-SFGT
 
-Esta solución tiene el objetivo de implementar el patrón Iterable-Iterador a la clas Order la cual contiene una lista de items, que son los elementos de la orden.
+Esta solución tiene el objetivo de implementar el patrón Iterable-Iterador a la clase Order la cual contiene una lista de items, que son los elementos de la orden.
 
 ## Clases Principales
 
